@@ -123,6 +123,8 @@ apt-get update
 ```
 
 Selanjutnya bisa dicoba `ping google.com` di setiap nodenya untuk mengetes apakah sudah terkoneksi ke internet
+<img width="649" alt="1cpl" src="https://user-images.githubusercontent.com/32472207/198840325-ca152fd0-615e-4735-871c-00dacad1a3b9.png">
+
 
 ## Nomer 2
 Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise
@@ -165,6 +167,8 @@ echo 'nameserver 192.169.2.2' > /etc/resolv.conf
 ping wise.a01.com -c 5
 ping www.wise.a01.com -c 5
 ```
+<img width="410" alt="2cpl" src="https://user-images.githubusercontent.com/32472207/198840336-94481ec3-fd1a-4256-bea6-47029e036a4b.png">
+
 
 ## Nomer 3
 Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden
@@ -198,6 +202,8 @@ Untuk mengetest hasilnya
 ping eden.wise.a01.com -c 5
 ping www.eden.wise.a01.com -c 5
 ```
+<img width="382" alt="3cpl" src="https://user-images.githubusercontent.com/32472207/198840341-e3d55b9f-b589-49a6-b9da-b8e9bd5bca90.png">
+
 
 ## Nomer 4
 Buat juga reverse domain untuk domain utama
@@ -240,6 +246,8 @@ nameserver 192.169.2.2
 '  > /etc/resolv.conf
 host -t PTR 192.169.2.2
 ```
+<img width="555" alt="4cpl" src="https://user-images.githubusercontent.com/32472207/198840353-eafc558d-0cd8-4f96-97f3-c4d7cee758c7.png">
+
 
 ## Nomer 5
 Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama
@@ -281,6 +289,8 @@ nameserver 192.169.2.2
 '  > /etc/resolv.conf
 ping wise.a01.com -c 5
 ```
+<img width="398" alt="5cpl" src="https://user-images.githubusercontent.com/32472207/198840359-ad55c9cc-83a5-4ad4-8f60-d78b1888d945.png">
+
 
 ## Nomer 6
 Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation
@@ -374,6 +384,8 @@ Untuk mengetest hasilnya
     ping www.operation.wise.a01.com -c 5
 
 ```
+<img width="455" alt="6cpl" src="https://user-images.githubusercontent.com/32472207/198840381-7f65ec84-fae8-444a-9f84-a450c6773a44.png">
+
 
 ## Nomer 7
 Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden 
@@ -407,6 +419,8 @@ Untuk mengetest hasilnya
 ping strix.operation.wise.a01.com -c 5
 ping www.strix.operation.wise.a01.com -c 5
 ```
+<img width="447" alt="7cpl" src="https://user-images.githubusercontent.com/32472207/198840396-b5a2ff42-b435-4b5b-ab28-bdf1beb996b1.png">
+
 
 ## Nomer 8
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com
@@ -505,6 +519,8 @@ apt-get install lynx
 echo “nameserver 192.169.2.2” > /etc/resolv.conf
 lynx www.wise.a01.com
 ```
+<img width="559" alt="8cpl" src="https://user-images.githubusercontent.com/32472207/198840418-a782ba87-6d81-4050-b363-904cd52d37af.png">
+
 
 ## Nomer 9
 Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home
@@ -541,6 +557,8 @@ Untuk mengetest hasilnya
 ```
 lynx www.wise.a01.com/home
 ```
+<img width="559" alt="8cpl" src="https://user-images.githubusercontent.com/32472207/198840454-db0d41e9-25d1-47cc-ab97-2c29efbe2ca9.png">
+
 
 ## Nomer 10
 Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
@@ -572,6 +590,8 @@ Untuk mengetest hasilnya
 ```
 lynx www.eden.wise.a01.com
 ```
+<img width="551" alt="10" src="https://user-images.githubusercontent.com/32472207/198840461-7a873fde-d744-4528-99a4-b2879ed78e74.png">
+
 
 ## Nomer 11
 Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja
@@ -609,6 +629,8 @@ Untuk mengetest hasilnya
 ```
 lynx eden.wise.a01.com/public
 ```
+<img width="556" alt="11" src="https://user-images.githubusercontent.com/32472207/198840465-0d5f1551-4722-479f-9b5b-357f6447fb85.png">
+
 
 ## Nomer 12
 Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
@@ -653,6 +675,8 @@ Untuk mengetest hasilnya
 ```
 lynx eden.wise.a01.com/anythingexceptjarkom
 ```
+<img width="557" alt="12" src="https://user-images.githubusercontent.com/32472207/198840473-d08b4f26-bcf6-43fe-a9be-1402fa978f5e.png">
+
 
 ## Nomer 13
 Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js 
@@ -700,6 +724,8 @@ Untuk mengetest hasilnya
 ```
 lynx www.eden.wise.a01.com/js
 ```
+<img width="552" alt="13" src="https://user-images.githubusercontent.com/32472207/198840481-4336f41c-664c-4a51-84e7-33046c5bc497.png">
+
 
 ## Nomer 14
 Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
@@ -749,6 +775,7 @@ echo ‘nameserver 192.169.2.2 #IP WISE nameserver 192.169.3.2 # IP Berlint’ >
 lynx strix.operation.wise.a01.com:15000
 lynx strix.operation.wise.a01.com:15500
 ```
+<img width="560" alt="14a" src="https://user-images.githubusercontent.com/32472207/198840495-e228f1c8-aaee-49d8-9833-e7947664137d.png">
 
 ## Nomer 15
 dengan autentikasi username Twilight dan password opStrix dan file di /var/www/strix.operation.wise.yyy
@@ -789,6 +816,8 @@ echo ‘nameserver 192.169.2.2 #IP WISE nameserver
 lynx strix.operation.wise.a01.com:15000 atau :15500
 
 ```
+<img width="560" alt="14a" src="https://user-images.githubusercontent.com/32472207/198840528-5e59fcac-1821-43dd-8d3e-48afe440d767.png">
+
 
 ## Nomer 16
 dan setiap kali mengakses IP Eden akan dialihkan secara otomatis ke www.wise.yyy.com
@@ -820,6 +849,9 @@ Untuk mengetest hasilnya
 ```
 lynx 192.169.3.3
 ```
+<img width="556" alt="16a" src="https://user-images.githubusercontent.com/32472207/198840539-68a92b9e-f064-4f0d-9bab-9b8337c76031.png">
+<img width="554" alt="16b" src="https://user-images.githubusercontent.com/32472207/198840542-986e56f6-0a25-409f-9d8b-64dc59cc43f2.png">
+
 
 ## Nomer 17
 arena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian! 
@@ -876,3 +908,5 @@ Untuk mengetest hasilnya
 #testing
 lynx eden.wise.a01.com/public/images/not-eden.png 
 ```
+<img width="568" alt="17cpl" src="https://user-images.githubusercontent.com/32472207/198840574-416da99d-c32d-4d02-8bcf-3f38ea048ddb.png">
+
