@@ -10,46 +10,127 @@
 
 https://docs.google.com/document/d/1bTtODp2nZwvdVZ-PV4ETgC8O93APC6nHpAGOaEQ-sWk/edit?usp=sharing
 
-<h2>Daftar Isi</h2>
+## Daftar isi
 
-- [Soal 1](#soal-1) <br>
-- [Soal 2](#soal-2) <br>
-- [Soal 3](#soal-3) <br>
-- [Soal 4](#soal-4) <br>
-- [Soal 5](#soal-5) <br>
-- [Soal 6](#soal-6) <br>
-- [Soal 7](#soal-7) <br>
-- [Soal 8](#soal-8) <br>
-- [Soal 9](#soal-9) <br>
-- [Soal 10](#soal-10) <br>
-- [Soal 11](#soal-11) <br>
-- [Soal 12](#soal-12) <br>
-- [Soal 13](#soal-13) <br>
-- [Soal 14](#soal-14) <br>
-- [Soal 15](#soal-15) <br>
-- [Soal 16](#soal-16) <br>
-- [Soal 17](#soal-17) <br>
+- [Anggota Kelompok](#anggota-kelompok)
+- [Nomer 1](#nomer-1)
+- [Nomer 2](#nomer-2)
+- [Nomer 3](#nomer-3)
+- [Nomer 4](#nomer-4)
+- [Nomer 5](#nomer-5)
+- [Nomer 6](#nomer-6)
+- [Nomer 7](#nomer-7)
+- [Nomer 8](#nomer-8)
+- [Nomer 9](#nomer-9)
+- [Nomer 10](#nomer-10)
+- [Nomer 11](#nomer-11)
+- [Nomer 12](#nomer-12)
+- [Nomer 13](#nomer-13)
+- [Nomer 14](#nomer-14)
+- [Nomer 15](#nomer-15)
+- [Nomer 16](#nomer-16)
+- [Nomer 17](#nomer-17)
+- [Kendala](#kendala)
 
-<h3>Soal 1</h3>
-WISE akan dijadikan sebagai DNS Master, Berlint akan dijadikan DNS Slave, dan Eden akan digunakan sebagai Web Server. Terdapat 2 Client yaitu SSS, dan Garden. Semua node terhubung pada router Ostania, sehingga dapat mengakses internet (1).
-<ul>
-  <li>[On Wise]</li>
-  ```
-  
-  ```
-  <li>[On SSS & Garden]</li>
-  ```
-  
-  ```
-</ul>
+## Nomer 1
+- DNS master : WISE
+- DNS Slave : Berlint
+- Web server : Eden
+- Client : SSS & Garden
 
-<h3>Soal 2</h3>
-Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise 
-<b>Langkah pengerjaan : </b>
-<ul>
-  <li>[On Wise]</li>
-  ```
-  apt-get install bind9 -y
+Semua node terhubung pada router Ostania, sehingga dapat mengakses internet
+<img width="606" alt="image" src="https://user-images.githubusercontent.com/73029778/198825654-3554d22a-1a65-4475-a619-3610fe3ad222.png">
+
+> Konfigurasi Ostania
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 192.169.1.1
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 192.169.2.1
+	netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+	address 192.169.3.1
+	netmask 255.255.255.0
+```
+
+> Konfigurasi WISE
+```
+auto eth0
+iface eth0 inet static
+	address 192.169.2.2
+	netmask 255.255.255.0
+	gateway 192.169.2.1
+```
+
+> Konfigurasi SSS
+```
+auto eth0
+iface eth0 inet static
+	address 192.169.1.2
+	netmask 255.255.255.0
+	gateway 192.169.1.1
+```
+
+> Konfigurasi Garden
+```
+auto eth0
+iface eth0 inet static
+	address 192.169.1.3
+	netmask 255.255.255.0
+	gateway 192.169.1.1
+```
+
+> Konfigurasi Berlint
+```
+auto eth0
+iface eth0 inet static
+	address 192.169.3.2
+	netmask 255.255.255.0
+	gateway 192.169.3.1
+```
+
+> Konfigurasi Eden
+```
+auto eth0
+iface eth0 inet static
+	address 192.169.3.3
+	netmask 255.255.255.0
+	gateway 192.169.3.1
+```
+
+> Dalam terminal Ostania
+Masukkan command berikut. Prefix untuk kelompok kita adalah 192.169
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.169.0.0/16
+apt-get update
+```
+command tersebut bisa dimasukkan ke dalam .bashrc
+
+> Dalam terminal WISE, SSS, Garden, Berlint, dan Eden
+Masukkan command berikut
+```
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+apt-get update
+```
+
+Selanjutnya bisa dicoba `ping google.com` di setiap nodenya untuk mengetes apakah sudah terkoneksi ke internet
+
+## Nomer 2
+Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise
+
+> Dalam terminal WISE
+Masukkan command berikut
+```
+apt-get install bind9 -y
 echo  'zone "wise.a01.com" {
         type master;
         file "/etc/bind/wise/wise.a01.com";
@@ -75,146 +156,723 @@ eden                    IN      A       192.169.3.3
 www.eden                IN      CNAME   eden
 ' > /etc/bind/wise/wise.a01.com
 service bind9 restart
-  ```
-  <li>[On SSS & Garden]</li>
-  ```
-  
-  ```
-</ul>
+```
 
-<h3>Soal 3</h3>
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+echo 'nameserver 192.169.2.2' > /etc/resolv.conf
+ping wise.a01.com -c 5
+ping www.wise.a01.com -c 5
+```
+
+## Nomer 3
 Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
-<img src="assets/3.png" alt="3">
 
-<h3>Soal 4</h3>
+> Dalam terminal WISE
+```
+echo  '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     wise.a01.com. root.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@                       IN      NS      wise.a01.com.
+@                       IN      A       192.169.2.2
+www                     IN      CNAME   wise.a01.com.
+eden                    IN      A       192.169.3.3
+www.eden                IN      CNAME   eden
+' > /etc/bind/wise/wise.a01.com
+service bind9 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+ping eden.wise.a01.com -c 5
+ping www.eden.wise.a01.com -c 5
+```
+
+## Nomer 4
 Buat juga reverse domain untuk domain utama
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 5</h3>
+> Dalam terminal WISE
+```
+echo  'zone "2.169.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/wise/2.169.192.in-addr.arpa";
+};'  > /etc/bind/named.conf.local
+cp /etc/bind/db.local /etc/bind/wise/2.169.192.in-addr.arpa
+echo  '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     wise.a01.com. root.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+2.169.192.in-addr.arpa. IN      NS      wise.a01.com.
+2       IN      PTR     wise.a01.com.
+' > /etc/bind/wise/2.169.192.in-addr.arpa
+service bind9 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+echo  '
+nameserver 192.168.122.1
+'  > /etc/resolv.conf
+apt-get update
+apt-get install dnsutils -y
+echo  '
+nameserver 192.169.2.2
+'  > /etc/resolv.conf
+host -t PTR 192.169.2.2
+```
+
+## Nomer 5
 Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 6</h3>
+> Dalam terminal WISE
+```
+echo  'zone "wise.a01.com" {
+        type master;
+	   notify yes;
+	   also-notify { 192.169.3.2; };
+	   allow-transfer { 192.169.3.2; };
+        file "/etc/bind/wise/wise.a01.com";
+};' > /etc/bind/named.conf.local
+service bind9 restart
+```
+
+> Dalam terminal Berlint
+```
+apt-get install bind9 -y
+echo  'zone "wise.a01.com" {
+        type slave;
+	   masters { 192.169.2.2; };
+   file "/var/lib/bind/wise.a01.com";
+};' > /etc/bind/named.conf.local
+service bind9 restart
+```
+
+> Dalam terminal WISE
+```
+service bind9 stop
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+echo  '
+nameserver 192.169.3.2
+nameserver 192.169.2.2
+'  > /etc/resolv.conf
+ping wise.a01.com -c 5
+```
+
+## Nomer 6
 Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 7</h3>
-Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden
-<b>Langkah pengerjaan : </b>
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
+> Dalam terminal WISE
+```
+echo  '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     wise.a01.com. root.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@                       IN      NS      wise.a01.com.
+@                       IN      A       192.169.2.2
+www                     IN      CNAME   wise.a01.com.
+eden                    IN      A       192.169.3.3
+www.eden                IN      CNAME   eden
+ns2                     IN      A       192.169.3.2
+operation               IN      A       ns2
+www.operation           IN      CNAME   operation
+' > /etc/bind/wise/wise.a01.com
+service bind9 restart
 
-<h3>Soal 8</h3>
+echo  '
+options {
+        directory "/var/cache/bind";
+
+        allow-query{any;};
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+' > /etc/bind/named.conf.options
+```
+
+> Dalam terminal Berlint
+```
+echo '
+options {
+        directory "/var/cache/bind";
+
+        allow-query{any;};
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+' > /etc/bind/named.conf.options
+
+echo  'zone "operation.wise.a01.com" {
+        type master;
+        file "/etc/bind/operation/operation.wise.a01.com";
+};
+zone "wise.a01.com" {
+        type slave;
+	   masters { 192.169.2.2; };
+   file "/var/lib/bind/wise.a01.com";
+};
+' > /etc/bind/named.conf.local
+mkdir /etc/bind/operation
+cp /etc/bind/db.local /etc/bind/operation/operation.wise.a01.com
+echo  '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     operation.wise.a01.com. root.operation.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@                       IN      NS      operation.wise.a01.com.
+@                       IN      A       192.169.3.3
+www                     IN      CNAME   operation.wise.a01.com.
+
+' > /etc/bind/operation/operation.wise.a01.com
+service bind9 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+    ping operation.wise.a01.com -c 5
+    ping www.operation.wise.a01.com -c 5
+
+```
+
+## Nomer 7
+Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden 
+
+> Dalam terminal Berlint
+```
+echo  '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     operation.wise.a01.com. root.operation.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@                       IN      NS      operation.wise.a01.com.
+@                       IN      A       192.169.3.3
+www                     IN      CNAME   operation.wise.a01.com.
+strix                   IN      A       192.169.3.3
+www.strix               IN      CNAME   strix
+' > /etc/bind/operation/operation.wise.a01.com
+service bind9 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+ping strix.operation.wise.a01.com -c 5
+ping www.strix.operation.wise.a01.com -c 5
+```
+
+## Nomer 8
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 9</h3>
+> Dalam terminal Wise
+```
+cp /etc/bind/wise/2.169.192.in-addr.arpa /etc/bind/wise/3.169.192.in-addr.arpa
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     wise.a01.com. root.wise.a01.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+3.169.192.in-addr.arpa. IN      NS      wise.a01.com.
+2       IN      PTR     wise.a01.com.
+' > /etc/bind/wise/3.169.192.in-addr.arpa
+
+echo '
+zone "wise.a01.com" {
+        type master;
+        file "/etc/bind/wise/wise.a01.com";
+	   allow-transfer { 192.169.3.2; };
+};
+
+zone "3.169.192.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/3.169.192.in-addr.arpa";
+};
+' > /etc/bind/named.conf.local
+
+echo '
+$TTL    604800
+@       IN      SOA     wise.a01.com. root.wise.a01.com.(
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.a01.com.
+@       IN      A       192.169.3.3
+www     IN      CNAME   wise.a01.com.
+eden    IN      A       192.169.3.3
+www.eden IN CNAME eden.wise.a01.com.
+ns1     IN      A       192.169.3.3
+operation  IN  NS  ns1
+' > /etc/bind/wise/wise.a01.com
+
+service bind9 restart
+```
+
+> Dalam terminal Eden
+```
+apt-get update
+apt-get install apache2 -y
+service apache2 start
+apt install php -y
+apt install libapache2-mod-php7.0 -y
+apt install wget -y
+apt install unzip -y
+
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/wise.a01.com.conf 
+
+echo '
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+   DocumentRoot /var/www/wise.a01.com
+   ServerName wise.a01.com
+        ServerAlias www.wise.a01.com
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+' > /etc/apache2/sites-available/wise.a01.com.conf
+mkdir /var/www/wise.a01.com
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S0XhL 9ViYN7TyCj2W66BNEXQD2AAAw2e' -O /var/www/wise.zip
+unzip /var/www/wise.zip -d /var/www
+cp /var/www/wise/* /var/www/wise.a01.com
+a2ensite wise.a01.com
+service apache2 restart
+service apache2 reload
+```
+
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+apt-get install lynx
+echo “nameserver 192.169.2.2” > /etc/resolv.conf
+lynx www.wise.a01.com
+```
+
+## Nomer 9
 Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 10</h3>
+> Dalam terminal Eden
+```
+a2enmod rewrite
+service apache2 restart 
+echo '
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) /index.php/\$1 [L]
+' > /var/www/wise.a01.com/.htaccess 
+echo '
+<VirtualHost *:80>
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/wise.a01.com
+ServerName wise.a01.com
+ServerAlias www.wise.a01.com 
+ErrorLog \${APACHE_LOG_DIR}/error.log
+CustomLog \${APACHE_LOG_DIR}/access.log combined
+<Directory /var/www/wise.a01.com>
+Options +FollowSymLinks -Multiviews
+AllowOverride All
+</Directory>
+</VirtualHost>
+
+' > /etc/apache2/sites-available/wise.a01.com.conf service apache2 restart 
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx www.wise.a01.com/home
+```
+
+## Nomer 10
 Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 11</h3>
+> Dalam terminal Eden
+```
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/eden.wise.a01.com.conf
+
+echo '
+<VirtualHost *:80>
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/eden.wise.a01.com
+ServerName eden.wise.a01.com
+ServerAlias www.eden.wise.a01.com
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+<VirtualHost>
+' > /etc/apache2/sitesavailable/eden.wise.a01.com.conf
+mkdir /var/www/eden.wise.a01.com
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1q9g6n M85bW5T9f5yoyXtDqonUKKCHOTV' -O /var/www/eden.wise.zip unzip /var/www/eden.wise.zip -d /var/www
+cp /var/www/eden.wise/* /var/www/eden.wise.a01.com
+a2ensite eden.wise.a01.com
+service apache2 restart
+service apache2 reload
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx www.eden.wise.a01.com
+```
+
+## Nomer 11
 Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 12</h3>
+> Dalam terminal Eden
+```
+echo "
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.a01.com
+        ServerName eden.wise.a01.com
+        ServerAlias www.eden.wise.a01.com
+
+        <Directory /var/www/eden.wise.a01.com/public>
+                Options +Indexes
+        </Directory>
+
+          <Directory /var/www/eden.wise.a01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+         </Directory>
+
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog \${APACHE_LOG_DIR}/access.log
+combined
+</VirtualHost>
+" > /etc/apache2/sites-available/eden.wise.a01.com.conf
+
+service apache2 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx eden.wise.a01.com/public
+```
+
+## Nomer 12
 Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 13</h3>
-Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
+> Dalam terminal Eden
+```
+echo "
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.a01.com
+        ServerName eden.wise.a01.com
+        ServerAlias www.eden.wise.a01.com
 
-<h3>Soal 14</h3>
+        ErrorDocument 404 /error/404.html
+        ErrorDocument 500 /error/404.html
+        ErrorDocument 502 /error/404.html
+        ErrorDocument 503 /error/404.html
+        ErrorDocument 504 /error/404.html
+
+        <Directory /var/www/eden.wise.a01.com/public>                                   
+ Options +Indexes
+        </Directory>
+
+         <Directory /var/www/eden.wise.a01.com>
+                Options +FollowSymLinks -Multiviews             
+ AllowOverride All
+         </Directory>
+
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog \${APACHE_LOG_DIR}/access.log
+combined 
+</VirtualHost>
+" > /etc/apache2/sitesavailable/eden.wise.a01.com.conf
+
+service apache2 restart
+
+service apache2 reload
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx eden.wise.a01.com/anythingexceptjarkom
+```
+
+## Nomer 13
+Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js 
+
+> Dalam terminal Eden
+```
+echo '
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.a01.com
+        ServerName eden.wise.a01.com
+        ServerAlias www.eden.wise.a01.com
+
+        <Directory /var/www/eden.wise.a01.com/public>                Options +Indexes
+        </Directory>
+
+        Alias "/js"
+"/var/www/eden.wise.a01.com/public/js"
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log
+combined
+
+        ErrorDocument 404 /error/404.html
+        ErrorDocument 500 /error/404.html
+        ErrorDocument 502 /error/404.html
+        ErrorDocument 503 /error/404.html
+        ErrorDocument 504 /error/404.html
+
+        <Directory /var/www/eden.wise.a01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+</VirtualHost>
+'  > /etc/apache2/sites-available/eden.wise.a01.com.conf
+
+service apache2 restart
+
+service apache2 reload
+
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx www.eden.wise.a01.com/js
+```
+
+## Nomer 14
 Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 15</h3>
+> Dalam terminal Eden
+```
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/eden.wise.a01.com.conf
+echo '
+<VirtualHost *:15000 *:15500>
+     ServerAdmin webmaster@localhost
+DocumentRoot /var/www/strix.operation.wise.a01.com
+ServerName strix.operation.wise.a01.com
+ServerAlias www.strix.operation.wise.a01.com
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog        ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+' > /etc/apache2/sites-
+available/strix.operation.wise.a01.com.conf
+mkdir /var/www/strix.operation.wise.a01.com
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1bgd3B6VtDtVv2ouqyM8wLyZGzK5C9maT’ -O /var/www/strix.operation.wise.zip
+unzip /var/www/strix.operation.wise.zip -d /var/www cp -r /var/www/strix.operation.wise/* /var/www/strix.operation.wise.a01.com
+rm -r /var/www/strix.operation.wise
+a2ensite strix.operation.wise.a01.com
+
+echo '
+Listen 80
+Listen 15000
+Listen 15500
+
+<IfModule ssl_module>
+Listen 443
+</IfModule>
+
+<IfModule gnutls.c>
+Listen 443
+</IfModule>
+' > /etc/apache2/ports.conf
+service apache2 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+echo ‘nameserver 192.169.2.2 #IP WISE nameserver 192.169.3.2 # IP Berlint’ > /etc/resolv.conf
+lynx strix.operation.wise.a01.com:15000
+lynx strix.operation.wise.a01.com:15500
+```
+
+## Nomer 15
 dengan autentikasi username Twilight dan password opStrix dan file di /var/www/strix.operation.wise.yyy
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 16</h3>
+> Dalam terminal Eden
+```
+apt-get install apache2-utils
+htpasswd -c /etc/apache2/.htpasswd Twilight opStrix 
+echo '
+<VirtualHost *:15000 *:15500>
+ServerAdmin webmaster@localhost
+DocumentRoot
+/var/www/strix.operation.wise.a01.com
+ServerName strix.operation.wise.a01.com
+ServerAlias www.strix.operation.wise.a01.com
+
+<Directory
+"/var/www/strix.operation.wise.a01.com"> AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /etc/apache2/.htpasswd
+Require valid-user
+</Directory>
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog        ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+' > /etc/apache2/sites-available/strix.operation.wise.a01.com.conf
+service apache2 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+echo ‘nameserver 192.169.2.2 #IP WISE nameserver
+192.175.3.2 # IP Berlint’ > /etc/resolv.conf
+lynx strix.operation.wise.a01.com:15000 atau :15500
+
+```
+
+## Nomer 16
 dan setiap kali mengakses IP Eden akan dialihkan secara otomatis ke www.wise.yyy.com
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
 
-<h3>Soal 17</h3>
-Karena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian!
-<ul>
-  <li>[On Wise]</li>
-  <img src="assets/1.png" alt="1">
-  <li>[On SSS & Garden]</li>
-  <img src="assets/1.png" alt="1">
-</ul>
+> Dalam terminal Eden
+```
+echo '
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        RewriteEngine On
+        RewriteCond %{HTTP_HOST} !^wise.a01.com$
+        RewriteRule /.* http://wise.a01.com/ [R]
+
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog 
+\${APACHE_LOG_DIR}/access.log 
+combined
+
+</VirtualHost>
+' > /etc/apache2/sites-available/000-default.conf
+service apache2 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+lynx 192.169.3.3
+```
+
+## Nomer 17
+arena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian! 
+
+> Dalam terminal Eden
+```
+a2enmod rewrite
+echo '
+RewriteEngine On
+RewriteRule (.*)eden(.*)(\.jpg|\.png|\.gif)$
+http://eden.wise.a01.com/public/images/eden.png
+[L,R=301]
+' > /var/www/eden.wise.a01.com/.htaccess
+
+echo '
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.a01.com
+        ServerName eden.wise.a01.com
+        ServerAlias www.eden.wise.a01.com
+
+        ErrorDocument 404 /error/404.html
+        ErrorDocument 500 /error/404.html
+        ErrorDocument 502 /error/404.html
+        ErrorDocument 503 /error/404.html
+        ErrorDocument 504 /error/404.html
+
+        <Directory /var/www/eden.wise.a01.com/public>
+                Options +Indexes
+        </Directory>
+
+        Alias 
+"/js" 
+"/var/www/eden.wise.a01.com/public/js"
+
+        <Directory /var/www/eden.wise.a01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog 
+\${APACHE_LOG_DIR}/access.log 
+combined
+
+</VirtualHost>
+' > /etc/apache2/sites-available/eden.wise.a01.com.conf
+service apache2 restart
+```
+
+Untuk mengetest hasilnya
+> Dalam terminal SSS & Garden
+```
+#testing
+lynx eden.wise.a01.com/public/images/not-eden.png 
+```
