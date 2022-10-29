@@ -39,7 +39,6 @@ https://docs.google.com/document/d/1bTtODp2nZwvdVZ-PV4ETgC8O93APC6nHpAGOaEQ-sWk/
 - Client : SSS & Garden
 
 Semua node terhubung pada router Ostania, sehingga dapat mengakses internet
-<img width="606" alt="image" src="https://user-images.githubusercontent.com/73029778/198825654-3554d22a-1a65-4475-a619-3610fe3ad222.png">
 
 > Konfigurasi Ostania
 ```
